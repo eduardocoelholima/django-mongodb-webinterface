@@ -7,7 +7,7 @@ The following steps were successfully tested on Ubuntu 15.10 x86 64bit, using Py
 
 1. Before we actually install anything, let’s make sure your Ubuntu local apt repository is synced with the latest one. Open a terminal an type:
 
-#sudo apt-get update
+  sudo apt-get update
 
 2. Now let’s install the required prerequisites using ubuntu built-in apt package manager
 
