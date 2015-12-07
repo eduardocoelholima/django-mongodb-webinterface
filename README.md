@@ -35,6 +35,6 @@ The following steps were successfully tested on Ubuntu 15.10 x86 64bit, using Py
 6. Open the browser and paste this address
 
   ```
-  http://localhost:8000/polls
+  [http://localhost:8000/polls](http://localhost:8000/polls)
   ```
 7. Done! Easy, right?
