@@ -73,7 +73,10 @@
     function reload() {
     	window.location='http://dantheran7.ddns.net/';
     }
-	    
+	function linktogooglemaps(coor){
+		var res = coor.split(",");
+		location.href='http://maps.google.com/maps?z=12&t=m&q=loc:'+res[0]+'+'+res[1]
+	}   
 	</script>
 </head>
 

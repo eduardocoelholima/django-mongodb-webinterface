@@ -61,9 +61,8 @@ def index(request):
 				injectedHTML += '<tr><td>User Name:</td><td>'+result['fromUser']+'</td></tr>'
 				injectedHTML += '<tr><td>Tweet Text:</td><td>'+text+'</td></tr>'
 				injectedHTML += '<tr><td>Latitude:</td><td>'+str(result['latitude'])+'</td></tr>'
-				injectedHTML += '<tr><td>Logitude:</td><td>'+str(result['longitude'])+'</td></tr>'
+				injectedHTML += '<tr><td>Longitude:</td><td>'+str(result['longitude'])+'</td></tr>'
 				injectedHTML += '<tr><td>Tweeted At:</td><td>'+result['createdAt']+'</td></tr>'
-				
 				
 				if 'comment' in result.keys():
 					comments = result['comment']
@@ -75,6 +74,7 @@ def index(request):
 				injectedHTML += '<tr><td>Comments: </td><td>'+comments+'</td></tr>'
 				injectedHTML += '<tr><td><button name=&quot;addcomment&quot; type=&quot;submit&quot;>Add Comment</button></td><td><input type=&quot;text&quot; name=&quot;comments&quot; value=&quot; &quot;></td></tr>'
 				injectedHTML += '</table>'
+				injectedHTML += '<button type = &quot;button&quot; onclick=linktogooglemaps(&quot;'+str(result['latitude'])+','+ str(result['longitude'])+'&quot;); class=&quot;buttons&quot;>Google Map Location</button>'
 				injectedHTML += '<input type=&quot;hidden&quot; name=&quot;id&quot; value=&quot;'+str(result['_id'])+'&quot;/>'
 				injectedHTML += '<input type=&quot;hidden&quot; name=&quot;username&quot; value=&quot;'+username+'&quot;/>'
 				injectedHTML += '<input type=&quot;hidden&quot; name=&quot;tweetbody&quot; value=&quot;'+tweetbody+'&quot; />'
@@ -89,9 +89,9 @@ def index(request):
 			resultsStr += '</table>'
 			
 			if next != 0:
-				resultsStr += '<form id="results" name="resultsform" action="/polls/" method="post"><button name="nextvalue" type="submit" value="'+str(next-1)+'">Previous</button>'
+				resultsStr += '<form id="results" name="resultsform" action="/" method="post"><button name="nextvalue" type="submit" value="'+str(next-1)+'">Previous</button>'
 			if next+1 != totalpages:
-				resultsStr += '<form id="results" name="resultsform" action="/polls/" method="post"><button name="nextvalue" type="submit" value="'+str(next+1)+'">Next</button>'
+				resultsStr += '<form id="results" name="resultsform" action="/" method="post"><button name="nextvalue" type="submit" value="'+str(next+1)+'">Next</button>'
 			
 			if totalsize != 0:
 				resultsStr += '<span>&nbsp;&nbsp;&nbsp;&nbsp;' +str(next+1) + ' out of '+ str(totalpages)+ '</span>'
