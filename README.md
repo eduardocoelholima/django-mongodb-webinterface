@@ -21,3 +21,6 @@ The following steps were successfully tested on Ubuntu 15.10 x86 64bit, using Py
  
 
 ## Running the interface
+
+
+https://github.com/eduardocoelholima/django-mongodb-webinterface/archive/master.zip
