@@ -29,7 +29,7 @@ The following steps were successfully tested on Ubuntu 15.10 x86 64bit, using Py
 5. Run the local webserver
 
   ```
-  cd ~/Downloads/django-mongodb-webinterface/
+  cd ~/Downloads/django-mongodb-webinterface-master/
   python manage.py runserver
   ```
 6. Open the browser
