@@ -1,0 +1,189 @@
+{% load staticfiles %}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+	<title>ISTE610 Group Project :: Twitter Search</title>
+	<style type="text/css">
+
+		body {background-color:#7cb2d4;}
+		#bodywrapper {width:1000px;
+		margin:0px auto;}
+
+		.FramedDisplayElement {border:2px inset;
+		padding:20px;
+		margin:5%;
+		background-color:#a2bbcb;}
+
+		#leftside {width:79%;
+		float:left;
+		display:inline-block;
+		clear:left;}
+
+		#RightSide {width:19%;
+		float:right;
+		text-align:center;
+		margin-top:10px;
+		display:inline-block;
+		vertical-align:top;}
+
+		.PageText,h1,h3 {text-align:center;
+		color:#333333;}
+
+		#introduction {width:60%;
+		margin:auto;
+		text-align:left;}
+
+		#sysdisplay {height:100px; overflow:hidden;}
+		#searchform {height:200px;}
+		#resultsdisplay {min-height:300px; overflow:auto;}
+		#tweetdisplay {display:none;}
+
+		img {border:1px solid #000000;}
+
+		td	{padding:8px 15px 8px 15px; border-bottom:1px outset;}
+
+		#tweetdisplay table {width:100%}
+		#tweetdisplay table tr td {min-width:100px;}
+					
+	</style>
+	<script type="text/javascript">	</script>
+	<script>
+		function show() { 
+        document.getElementById('tweetdisplay').style.display='block'; 
+        return false;
+    } 
+    function resetTest() {
+    	document.getElementById("queryform").reset();
+    	document.getElementById("tweetbody").value = "";
+    	document.getElementById("username").value = "";
+    }
+    function msg(msg) {
+    	document.getElementById("sysdisplay").innerHTML=msg;
+    }
+    function reload() {
+    	window.location='http://dantheran7.ddns.net/polls/';
+    }
+	</script>
+</head>
+
+<body>
+	<!-- The body wrapper prevents the site from stretching to extremes  -->
+	<div id="bodywrapper">
+	<!--  Left side contains the fuctional components of the site, the server feedback, search form and search results -->
+	<div id="leftside">
+		
+		<h1  onclick="msg('hey');">ISTE610 Group Project :: Twitter Search</h1>
+		<p id="introduction" class="PageText">For Searching the Twitter Database:<br/>
+			The system will start automatically, you can check the connection status in the window below. Once the connection is successful you will be able to search the database and interact with the results.</p>
+		
+		<!-- The sysdisplay contains the readou from the server detailing the connection and connection status  -->
+		<div id="sysdisplay" class="FramedDisplayElement">
+		{% if resultsStr %}		
+			{% if client %}
+    		<p>System Ready.<br>Connected to server {{client}}.<br/>Database {{dbname}}, collection {{collname}}.<br/>{{ totalsize }} results obtained.</p>
+			{% else %}
+    		<p>FAILURE. No connection.</p>
+			{% endif %}
+		{% else %}			
+    		<p>System Ready.</p>
+			
+		{% endif %}
+
+
+		
+		</div><!-- end sysdisplay   -->
+		
+		<!-- Search form contains the form for submitting queries against the database  -->
+		<div id="searchform" class="FramedDisplayElement">
+			<h3>Please fill out the form below to search the Twitter database</h3>
+			<form id="queryform" name="queryform" action="{% url 'polls:index'%}" method="post">
+				{% csrf_token %}
+				<div id="formfeild">
+				{% if searchbox %}
+			
+			
+				{% autoescape off %}
+				{{ searchbox }}
+				{% endautoescape %}
+				{% csrf_token %}
+			
+				{% endif %}	
+				</div><!--  end buttonfeild  -->
+			</form>
+		</div><!-- end searchform  -->
+		
+		<!-- Resultsdisplay contains the result of the queries as a list for which further entries can be selected  -->
+		{% if resultsStr %}
+		<div id="resultsdisplay" class="FramedDisplayElement">
+			
+			
+			{% autoescape off %}
+			{{ resultsStr }}
+			{% endautoescape %}
+			{% csrf_token %}
+			<!--/form>
+		{% else %}
+		<div id="resultsdisplay" class="FramedDisplayElement" style="display:none;">
+    		<p>No results are available.</p>
+		{% endif %}
+			<!-- {% if userNameList %}
+			<table>
+			{% for result in userNameList %}
+    		<tr><td>
+    		{{ result }}
+    		</tr></td>
+    		{% endfor %}
+    		</table>
+			{% else %}
+    		<p>No results are available.</p>
+			{% endif %}
+		-->
+		
+		</div><!-- end resultsdisplay  -->
+		
+		{% if resultsStr %}
+		<form id= "comments" name= "comments" action= "/polls/" method="post">
+		{% csrf_token %}
+		
+		<div id="tweetdisplay" class="FramedDisplayElement">
+		
+		</div>
+		</form> 
+		{% endif %}	
+		
+		
+	</div><!--  end left side  -->
+	
+	<!--   -->
+	<div id="RightSide">
+		<br/>
+		<h3>About Our Project</h3>
+		<hr/>
+		<h3>Our Team Members</h3>
+		<p class="PageText">
+			<img src="{% static 'polls/Dan.jpg' %}" width="150px"/><br/>
+			<span>Daniel Mooney</span>
+			<br/>
+			<br/>
+			<img src="{% static 'polls/eduardo.jpg' %}" width="150px"/><br/>
+			<span>Eduardo Coelho Lima</span>
+			<br/>
+			<br/>
+			<img src="{% static 'polls/John.jpg' %}" width="150px"/><br/>
+			<span>John Dettmer</span>
+			<br/>
+			<br/>
+		</p>
+		<hr/>
+		<p class="PageText">
+			I would like to fill in some more area hear discussing the project 
+		</p>
+	</div><!--   -->
+	
+	</div><!--   -->
+</body>
+</html>
