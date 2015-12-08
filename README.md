@@ -1,6 +1,9 @@
 # django-mongodb-webinterface
 Simple proof of concept Python/Django Web Interface to query a mongoDB instance
 
+(Project GITHUB home)[https://github.com/eduardocoelholima/django-mongodb-webinterface]
+(Live Demo)[http://thebestprojectever.ddns.net]
+
 ## Installation Instructions
 
 The following steps were successfully tested on Ubuntu 15.10 x86 64bit, using Python 2.7.9, Django 1.7.9, Pymongo 3.0.3 and mongoDB 2.6.10.  These are the latest version available through Ubuntu repository as of 2015-12-07, but you should be good with a fairly recent installation of the required dependencies.
