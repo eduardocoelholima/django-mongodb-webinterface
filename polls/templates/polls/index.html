@@ -18,12 +18,12 @@
 		margin:5%;
 		background-color:#a2bbcb;}
 
-		#leftside {width:79%;
+		#leftside {width:69%;
 		float:left;
 		display:inline-block;
 		clear:left;}
 
-		#RightSide {width:19%;
+		#RightSide {width:29%;
 		float:right;
 		text-align:center;
 		margin-top:10px;
@@ -48,35 +48,86 @@
 
 		#tweetdisplay table {width:100%}
 		#tweetdisplay table tr td {min-width:100px;}
+		#map {
+        
+        height: 400px;
+      	visibility:hidden;
+      	}
+      	
 					
 	</style>
-	<script type="text/javascript">	</script>
-	<script>
-	//document.getElementById('queryform').scrollIntoView();	
+	
+	<script type="text/javascript"
+    src="http://maps.google.com/maps/api/js?sensor=false">
+</script>
+
+	
+	<script type="text/javascript">	
+	var map;
+		
 	$(document).ready(function(){
-    //$("html,body").scrollTop(80);
+    
      document.getElementById('resultsdisplay').scrollIntoView();
 	});	
+	//on view tweet display the tweetdisplay div
 	function show() { 
         document.getElementById('tweetdisplay').style.display='block'; 
         document.getElementById('tweetdisplay').scrollIntoView();
+        document.getElementById('map').style.visibility='hidden'; 
         return false;
     } 
-    function resetTest() {
-    	document.getElementById("queryform").reset();
-    	document.getElementById("tweetbody").value = "";
-    	document.getElementById("username").value = "";
-    }
+   
     function msg(msg) {
     	document.getElementById("sysdisplay").innerHTML=msg;
     }
+    //reloading the webpage
     function reload() {
     	window.location='http://dantheran7.ddns.net/';
     }
-	function linktogooglemaps(coor){
-		var res = coor.split(",");
-		location.href='http://maps.google.com/maps?z=12&t=m&q=loc:'+res[0]+'+'+res[1]
-	}   
+
+	//google map  function passed on the coordiantes in the tweetdisplay div
+	function linktogooglemaps(coor) 
+	{
+	coorArr = coor.split(",");
+	latNum = coorArr[0] 
+	longNum = coorArr[1]
+	document.getElementById('map').style.visibility='visible';
+	var mapCanvas = document.getElementById('map');
+	var mapOptions = {
+      		center: new google.maps.LatLng(latNum,longNum),
+      		zoom: 15,
+      		mapTypeId: google.maps.MapTypeId.ROADMAP
+    	}
+    var map = new google.maps.Map(mapCanvas, mapOptions); 
+
+	var marker = new google.maps.Marker({
+        position: new google.maps.LatLng(latNum,longNum),
+        map: map,
+        title:"This is the place."
+    });  
+ 
+    var contentString = 'Hello <strong>World</strong>!';
+    var infowindow = new google.maps.InfoWindow({
+        content: contentString
+    });
+ 
+    google.maps.event.addListener(marker, 'click', function() {
+      infowindow.open(map,marker);
+    });
+    }
+	
+	
+		
+	function initialize() {
+    	var mapCanvas = document.getElementById('map');
+    	var mapOptions = {
+      		center: new google.maps.LatLng(44.5403, -78.5463),
+      		zoom: 8,
+      		mapTypeId: google.maps.MapTypeId.ROADMAP
+    }
+    var map = new google.maps.Map(mapCanvas, mapOptions);
+  } 
+  google.maps.event.addDomListener(window, 'load', initialize); 
 	</script>
 </head>
 
@@ -164,11 +215,12 @@
 		</div>
 		</form> 
 		{% endif %}	
-		
+	
+	<div class="FramedDisplayElement" id="map"></div>	
 		
 	</div><!--  end left side  -->
 	
-	<!--   -->
+	<!-- Right side display - for team photos and project text  -->
 	<div id="RightSide">
 		<br/>
 		<h3>About Our Project</h3>
@@ -189,11 +241,22 @@
 			<br/>
 		</p>
 		<hr/>
-		<p class="PageText">
-			I would like to fill in some more area hear discussing the project 
+		<p class="PageText" style="text-align:left; font-size:80%;">
+			<span style="font-weight:bold;">About this site and our project:</span></br></br>
+ 
+			Since the functionality of this project is relatively simple and direct, we’ve taken an approach of having the sight function as a single page, rather than bouncing the user between pages. As content (search results) are generated additional areas of the page open up to display the information. </br></br>
+
+			The display page is built with HTML with both local and inline CSS styling. 4 primary divs make up the main display area showing, a read out of the current system, the form for searching the dataset, the results of the search, and the selected individual tweet. Some JavaScript was utilized in managing the divs and reset fuctionality, and also in the display of the google map included as an option when viewing a tweet. </br></br>
+
+			The back end of the site functions using Python with support of a Django framework, which is one of the most popular frameworks available for the web. The PyMongo library was used to connect to the MongoDB which was hosted on Amazons EC2 cloud. </br></br>
+
+			Testing and development and hosting of the website was facilitated though installation of the required components on a RaspberryPi which performed without issue. After starting development we also cloned the project on GitHub for future reference and functionality.</br></br>
+
+			Communication for the project was done through Google Hangouts and e-mail, while in chat we would functionally pass control of elements of the site between us to allow for updates.
+ 
 		</p>
-	</div><!--   -->
+	</div><!-- End of the Right Side  -->
 	
-	</div><!--   -->
+	</div><!-- End of the body wrapper  -->
 </body>
 </html>
