@@ -24,7 +24,7 @@ The following steps were successfully tested on Ubuntu 15.10 x86 64bit, using Py
   ```
   wget https://github.com/eduardocoelholima/django-mongodb-webinterface/archive/master.zip
   ```
-4. Unzip the code whereever you want. You can run the code in any directory you which thanks to Python and Django awesome modularity. From this point let's assume you are running from your Downloads directory.
+4. Unzip the code whereever you want. You can run the code in any directory you wish thanks to Python's and Django's awesome modularity. From this point let's assume you are running from your Downloads directory.
 
   ```
   cd ~/Downloads
@@ -40,4 +40,6 @@ The following steps were successfully tested on Ubuntu 15.10 x86 64bit, using Py
   
   [http://localhost:8000](http://localhost:8000)
 
-7. Done! Easy, right?
+7. By default the appplication will try to connect on a Amazon EC2 mongoDB instance. You can change the database connections parameters in the /polls/views.py file.
+
+8. Done! Easy, right?
