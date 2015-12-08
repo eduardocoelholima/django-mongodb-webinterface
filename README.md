@@ -1,5 +1,5 @@
 # django-mongodb-webinterface
-Simple proof of concept Python/Django Web Interface to query a mongoDB instance
+A proof of concept Python/Django Web Interface to query a mongoDB instance
 
 [Project GITHUB home](https://github.com/eduardocoelholima/django-mongodb-webinterface)
 
