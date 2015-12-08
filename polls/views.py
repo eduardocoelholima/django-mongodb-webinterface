@@ -24,7 +24,7 @@ collname = collection.collection._Collection__name
 def index(request):
 	context = None
 	template = loader.get_template('polls/index.html')
-	resultsStr = ''
+	resultsStr = 'No results available.'
 	username = ''
 	next = ''
 	tweetbody = ''
@@ -67,7 +67,7 @@ def index(request):
 			
 			#used skip and limit to limit searches and have pages of results
 			results.skip(next*limitval).limit( limitval )
-			resultsStr += '<table>'
+			resultsStr = '<table>'
 			
 			#obtain the results and build an html tables to inject into the display tweet when user clicks "View Tweet" div in index.html file
 			for result in results:
@@ -79,8 +79,8 @@ def index(request):
 					text 	 = text.replace('"','\ ')
 					resultid = str(result['_id'])
 					fromUser = str(result['fromUser'])
-				
-					injectedHTML = '<table>'
+					injectedHTML  = '<form id= &quot;comments&quot; name= &quot;comments&quot; action= &quot;/&quot; method=&quot;post&quot;p>'
+					injectedHTML += '<table>'
 					injectedHTML += ' <tr><td>Tweet ID:</td><td>'+str(result['_id'])+'</td></tr>'
 					injectedHTML += '<tr><td>User Name:</td><td>'+result['fromUser']+'</td></tr>'
 					injectedHTML += '<tr><td>Tweet Text:</td><td>'+text+'</td></tr>'
@@ -124,6 +124,8 @@ def index(request):
 			if next+1 != totalpages:
 				resultsStr += '<form id="results" name="resultsform" action="/" method="post"><button name="nextvalue" type="submit" value="'+str(next+1)+'">Next</button>'
 			
+			
+			
 			#if totalsize of search was 0 ie no result found show now result otherwise show the numer of page out of all pages
 			if totalsize != 0:
 				resultsStr += '<span>&nbsp;&nbsp;&nbsp;&nbsp;' +str(next+1) + ' out of '+ str(totalpages)+ '</span>'
@@ -131,7 +133,9 @@ def index(request):
 				resultsStr +=  'No results available'
 			resultsStr += '<input type="hidden" name="username" value="'+username+'"/>'
 			resultsStr += '<input type="hidden" name="tweetbody" value="'+tweetbody+'" />'
-			resultsStr += '</form>'
+			#resultsStr += '</form>'
+			
+			
 			context = RequestContext(request, {'resultsStr': resultsStr,})
 	
 	#injecting the searchbox, prepopulated with text if availble, this is used so that username and tweetbody are persisted through all of our post request unless set
