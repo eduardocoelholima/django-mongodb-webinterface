@@ -1,3 +1,4 @@
+
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.template import RequestContext, loader
 from django.shortcuts import get_object_or_404, render, render_to_response 
@@ -44,11 +45,23 @@ def index(request):
 		if 'username' in request.POST.keys() and 'tweetbody' in request.POST.keys():
 			username = request.POST['username']
 			tweetbody = request.POST['tweetbody']
-
+	
+			username = username.strip()
+			tweetbody = tweetbody.strip()
 			
 			limitval = 15
-			results = collection.find({'text':{"$regex":'.*'+str(tweetbody)+'.*'},'fromUser':{"$regex":'.*'+str(username)+'.*'}})
+			if username == '' and tweetbody == '':
+				query = {}
+				
+			elif username == '':
+				query = {'text':{"$regex":'.*'+str(tweetbody)+'.*'}}
 			
+			elif tweetbody == '' :
+				query = {'fromUser':{"$regex":'.*'+str(username)+'.*'}}
+			else:
+				query = {'text':{"$regex":'.*'+str(tweetbody)+'.*'},'fromUser':{"$regex":'.*'+str(username)+'.*'}}
+			
+			results = collection.find(query)
 			totalsize = results.explain()['n']
 			totalpages = totalsize//15 + 1
 			
@@ -58,46 +71,49 @@ def index(request):
 			
 			#obtain the results and build an html tables to inject into the display tweet when user clicks "View Tweet" div in index.html file
 			for result in results:
-				text     = result['text']
-				text 	 = text.replace("'","\ ")
-				text 	 = text.replace('"','\ ')
-				resultid = str(result['_id'])
-				fromUser = str(result['fromUser'])
+				if 'text'  in result and 'fromUser' in result:
+					
 				
-				injectedHTML = '<table>'
-				injectedHTML += ' <tr><td>Tweet ID:</td><td>'+str(result['_id'])+'</td></tr>'
-				injectedHTML += '<tr><td>User Name:</td><td>'+result['fromUser']+'</td></tr>'
-				injectedHTML += '<tr><td>Tweet Text:</td><td>'+text+'</td></tr>'
-				injectedHTML += '<tr><td>Latitude:</td><td>'+str(result['latitude'])+'</td></tr>'
-				injectedHTML += '<tr><td>Longitude:</td><td>'+str(result['longitude'])+'</td></tr>'
-				injectedHTML += '<tr><td>Tweeted At:</td><td>'+result['createdAt']+'</td></tr>'
+					text     = result['text']
+					text 	 = text.replace("'","\ ")
+					text 	 = text.replace('"','\ ')
+					resultid = str(result['_id'])
+					fromUser = str(result['fromUser'])
 				
-				#if there is comment then display comment else display nothing
-				if 'comment' in result.keys():
-					comments = result['comment']
-					comments = comments.replace("'","\ ")
-					comments = comments.replace('"','\ ')
-				else:
-					comments = ''
+					injectedHTML = '<table>'
+					injectedHTML += ' <tr><td>Tweet ID:</td><td>'+str(result['_id'])+'</td></tr>'
+					injectedHTML += '<tr><td>User Name:</td><td>'+result['fromUser']+'</td></tr>'
+					injectedHTML += '<tr><td>Tweet Text:</td><td>'+text+'</td></tr>'
+					injectedHTML += '<tr><td>Latitude:</td><td>'+str(result['latitude'])+'</td></tr>'
+					injectedHTML += '<tr><td>Longitude:</td><td>'+str(result['longitude'])+'</td></tr>'
+					injectedHTML += '<tr><td>Tweeted At:</td><td>'+result['createdAt']+'</td></tr>'
 				
-				injectedHTML += '<tr><td>Comments: </td><td>'+comments+'</td></tr>'
+					#if there is comment then display comment else display nothing
+					if 'comment' in result.keys():
+						comments = result['comment']
+						comments = comments.replace("'","\ ")
+						comments = comments.replace('"','\ ')
+					else:
+						comments = ''
 				
-				#button for displaying comment
-				injectedHTML += '<tr><td><button name=&quot;addcomment&quot; type=&quot;submit&quot;>Add Comment</button></td><td><input type=&quot;text&quot; name=&quot;comments&quot; value=&quot; &quot;></td></tr>'
-				injectedHTML += '</table>'
-				injectedHTML += '<button type = &quot;button&quot; onclick=linktogooglemaps(&quot;'+str(result['latitude'])+','+ str(result['longitude'])+'&quot;); class=&quot;buttons&quot;>Google Map Location</button>'
+					injectedHTML += '<tr><td>Comments: </td><td>'+comments+'</td></tr>'
 				
-				#hidden post values 
-				injectedHTML += '<input type=&quot;hidden&quot; name=&quot;id&quot; value=&quot;'+str(result['_id'])+'&quot;/>'
-				injectedHTML += '<input type=&quot;hidden&quot; name=&quot;username&quot; value=&quot;'+username+'&quot;/>'
-				injectedHTML += '<input type=&quot;hidden&quot; name=&quot;tweetbody&quot; value=&quot;'+tweetbody+'&quot; />'
-				injectedHTML += '<input type=&quot;hidden&quot; name=&quot;nextvalue&quot; value=&quot;'+str(next)+'&quot; />'
+					#button for displaying comment
+					injectedHTML += '<tr><td><button name=&quot;addcomment&quot; type=&quot;submit&quot;>Add Comment</button></td><td><input type=&quot;text&quot; name=&quot;comments&quot; value=&quot; &quot;></td></tr>'
+					injectedHTML += '</table>'
+					injectedHTML += '<button type = &quot;button&quot; onclick=linktogooglemaps(&quot;'+str(result['latitude'])+','+ str(result['longitude'])+'&quot;); class=&quot;buttons&quot;>Google Map Location</button>'
+				
+					#hidden post values 
+					injectedHTML += '<input type=&quot;hidden&quot; name=&quot;id&quot; value=&quot;'+str(result['_id'])+'&quot;/>'
+					injectedHTML += '<input type=&quot;hidden&quot; name=&quot;username&quot; value=&quot;'+username+'&quot;/>'
+					injectedHTML += '<input type=&quot;hidden&quot; name=&quot;tweetbody&quot; value=&quot;'+tweetbody+'&quot; />'
+					injectedHTML += '<input type=&quot;hidden&quot; name=&quot;nextvalue&quot; value=&quot;'+str(next)+'&quot; />'
 								
-				#view tweet button with injected html to propegate to tweetdisplay div onclock
-				button 		  = '''<button type = "" onclick="getElementById('tweetdisplay').innerHTML = ' ''' +injectedHTML+''' ' ;show();">View Tweet</button> '''
+					#view tweet button with injected html to propegate to tweetdisplay div onclock
+					button 		  = '''<button type = "" onclick="getElementById('tweetdisplay').innerHTML = ' ''' +injectedHTML+''' ' ;show();">View Tweet</button> '''
 				
-				#String that is displayed in result div, view tweet button, fromUser and created AT
-				resultsStr   += "<tr><td>" + button+ "</td><td>" + str(result['fromUser']) + "</td><td>" + str(result['createdAt']) + "</td></tr>"
+					#String that is displayed in result div, view tweet button, fromUser and created AT
+					resultsStr   += "<tr><td>" + button+ "</td><td>" + str(result['fromUser']) + "</td><td>" + str(result['createdAt']) + "</td></tr>"
 				
 				
 				
@@ -115,7 +131,7 @@ def index(request):
 				resultsStr +=  'No results available'
 			resultsStr += '<input type="hidden" name="username" value="'+username+'"/>'
 			resultsStr += '<input type="hidden" name="tweetbody" value="'+tweetbody+'" />'
-			
+			resultsStr += '</form>'
 			context = RequestContext(request, {'resultsStr': resultsStr,})
 	
 	#injecting the searchbox, prepopulated with text if availble, this is used so that username and tweetbody are persisted through all of our post request unless set

@@ -8,46 +8,34 @@
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 	<title>ISTE610 Group Project :: Twitter Search</title>
 	<style type="text/css">
-
 		body {background-color:#7cb2d4;}
 		#bodywrapper {width:1000px;
 		margin:0px auto;}
-
-
-
 		.FramedDisplayElement {border:2px inset;
 		padding:20px;
 		margin:5%;
 		background-color:#a2bbcb;}
-
 		#leftside {width:69%;
 		float:left;
 		display:inline-block;
 		clear:left;}
-
 		#RightSide {width:29%;
 		float:right;
 		text-align:center;
 		margin-top:10px;
 		display:inline-block;
 		vertical-align:top;}
-
 		.PageText,h1,h3 {text-align:center;
 		color:#333333;}
-
 		#introduction {width:60%;
 		margin:auto;
 		text-align:left;}
-
 		#sysdisplay {height:100px; overflow:hidden;}
 		#searchform {height:200px;}
 		#resultsdisplay {min-height:300px; overflow:auto;}
 		#tweetdisplay {display:none;}
-
 		img {border:1px solid #000000;}
-
 		td	{padding:8px 15px 8px 15px; border-bottom:1px outset;}
-
 		#tweetdisplay table {width:100%}
 		#tweetdisplay table tr td {min-width:100px;}
 		#map {
@@ -86,7 +74,6 @@
     function reload() {
     	window.location='http://dantheran7.ddns.net/';
     }
-
 	//google map  function passed on the coordiantes in the tweetdisplay div
 	function linktogooglemaps(coor) 
 	{
@@ -101,7 +88,6 @@
       		mapTypeId: google.maps.MapTypeId.ROADMAP
     	}
     var map = new google.maps.Map(mapCanvas, mapOptions); 
-
 	var marker = new google.maps.Marker({
         position: new google.maps.LatLng(latNum,longNum),
         map: map,
