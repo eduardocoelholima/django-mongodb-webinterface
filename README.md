@@ -2,6 +2,7 @@
 Simple proof of concept Python/Django Web Interface to query a mongoDB instance
 
 [Project GITHUB home](https://github.com/eduardocoelholima/django-mongodb-webinterface)
+
 [Live Demo](http://thebestprojectever.ddns.net)
 
 ## Installation Instructions
